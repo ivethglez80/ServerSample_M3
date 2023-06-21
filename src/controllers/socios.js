@@ -42,14 +42,33 @@ async function userById(req,res){
     } catch (error) {
         res.status(STATUS_ERROR).json({message:"no se encuentra socio con ese id"});
     }
-
     return;
 }
 
-function userDeleteById(req,res){
-    return;
+/*en este caso vamos a eliminar un elemtno de un array const, que emula de mejor manera una base de datos, 
+vamos a usar splice para que no modifique el array original*/
+async function userDeleteById(req,res){
+    try {
+        const {id} = req.params;  
+        const list = await handlerList(true);
+        let indexSocio;
+        let socio;
+        list.map((s, index)=>{
+            if (s.id===Number(id)){
+                socio = s;
+                indexSocio = index;
+            }
+        })
+        if (socio){
+            list.splice(indexSocio,1)
+            return res.status(STATUS_OK).json(socio)
+        }
+    } catch (error) {
+        res.status(STATUS_ERROR).json({message:"error, no se ha podido concretar la eliminacion"});
+    };
 }
 
+/* es un put y recibe la informacion por query y por body*/
 function userUpdateById(req,res){
     return;
 }
@@ -77,6 +96,7 @@ async function userCreate(req,res){
     res.status(STATUS_ERROR).json({message:"error al cargar socio"})
     }  
 }
+
 
 function dataApiOut(req,res){
     return
