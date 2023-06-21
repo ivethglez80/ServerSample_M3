@@ -1,0 +1,4 @@
+// aqui debo de añadir .env para que no lo tome en cuenta en movimientos con git
+.env
+/node_nodemodules
+node_nodemodules/
