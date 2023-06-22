@@ -68,10 +68,40 @@ async function userDeleteById(req,res){
     };
 }
 
+
+
+
 /* es un put y recibe la informacion por query y por body*/
-function userUpdateById(req,res){
-    return;
-}
+async function userUpdateById(req, res) {
+    try {
+      const { id } = req.query; // Obtener el ID del socio desde req.query
+      const { name, descripcion, image, direcc, tel, actividad01 } = req.body;
+      
+      if (!id) {
+        return res.status(STATUS_ERROR).json({ message: "Falta el ID del socio" });
+      }
+  
+      const list = await handlerList(true);
+      let socio = list.find((s) => s.id === Number(id));
+  
+      if (!socio) {
+        return res.status(STATUS_ERROR).json({ message: "Socio no encontrado" });
+      }
+  
+      socio.name = name || socio.name;
+      socio.descripcion = descripcion || socio.descripcion;
+      socio.image = image || socio.image;
+      socio.direcc = direcc || socio.direcc;
+      socio.tel = tel || socio.tel;
+      socio.actividad01 = actividad01 || socio.actividad01;
+  
+      return res.status(STATUS_OK).json(socio);
+    } catch (error) {
+      res.status(STATUS_ERROR).json({ message: "Error al actualizar el socio" });
+    }
+  }
+
+  
 
 async function userCreate(req,res){
     const {id, name, descripcion, image, direcc, tel, actividad01} = req.body;
