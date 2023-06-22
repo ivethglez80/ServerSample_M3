@@ -3,6 +3,7 @@ const STATUS_OK = 200;
 const STATUS_ERROR = 404;
 
 const listSocios = [];
+const getEmojis = require("../services/index")
 
 //aqui vamos a simular que estamos consultando una base de datos y no el pequeño array listSocios
 function handlerList(swap){
@@ -127,9 +128,17 @@ async function userCreate(req,res){
     }  
 }
 
+/*con axios vamos a llamar de una URL unos emojis*/
+async function dataApiOut(req,res){
+    
+    try {
+        const result = await getEmojis() /*aqui podriamos corroborar que viene la data, no lo hacemos por falta de tiempo*/
+        res.status(STATUS_OK).json(result);
 
-function dataApiOut(req,res){
-    return
+    } catch (error) {
+        res.status(STATUS_ERROR).json({message:"error al cargar emoji"})
+    }
+    
 }
 
 module.exports = {
